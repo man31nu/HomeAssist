@@ -1,38 +1,74 @@
 <!-- ===== HERO SECTION ===== -->
 <section class="hero-section">
-  <div class="hero-bg-blur"></div>
+  <!-- Animated Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
   <div class="hero-content">
     <div class="hero-text">
-      <h1 class="hero-title">YOUR TRUSTED<br><span>HOME EXPERTS</span></h1>
+      <div class="badge-premium">⭐ India's #1 Home Services App</div>
+      <h1 class="hero-title">YOUR TRUSTED<br><span class="text-gradient">HOME EXPERTS</span></h1>
       <p class="hero-subtitle">
         Professional Home Services by <strong>HomeAssist</strong>: Cleaning,<br>
         Carpenter, Plumber &amp; Electrician. At Your Doorstep.
       </p>
-      <div class="hero-search">
+      <div class="hero-search glass-panel">
+        <span class="search-icon-btn" aria-label="search icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
         <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
           placeholder="Find the service you need..." class="search-input" id="hero-search-input" />
-        <span class="search-divider"></span>
-        <button class="search-icon-btn" aria-label="search icon">🔍</button>
-        <button class="btn-search" (click)="onSearch()">SEARCH</button>
+        <button class="btn-search btn-glow" (click)="onSearch()">SEARCH</button>
       </div>
     </div>
     <div class="hero-image">
-      <img src="image.png" alt="HomeAssist Professionals – Cleaner, Carpenter, Plumber, Electrician" />
+      <div class="image-wrapper">
+        <img src="image.png" alt="HomeAssist Professionals" />
+        <div class="floating-badge badge-left">
+          <span class="icon">🛡️</span>
+          <span>100% Secure</span>
+        </div>
+        <div class="floating-badge badge-right">
+          <span class="icon">⭐</span>
+          <span>4.9/5 Rated</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===== SELECT SERVICE SECTION ===== -->
 <section class="services-section" id="services">
-  <h2 class="section-title">SELECT SERVICE</h2>
+  <div class="section-header">
+    <h2 class="section-title">PREMIUM <span>SERVICES</span></h2>
+    <p class="section-subtitle">Select from our range of expert-vetted home services.</p>
+  </div>
+
   <div class="services-grid">
     @for (svc of services; track svc.name) {
-    <div class="service-card" (click)="bookService(svc.category)" [id]="'service-' + svc.category.toLowerCase()">
-      <div class="service-icon-wrap">{{ svc.icon }}</div>
+    <div class="service-card modern-card" (click)="bookService(svc.category)"
+      [id]="'service-' + svc.category.toLowerCase()">
+      <div class="card-bg-glow"></div>
+      <div class="service-icon-wrap">
+        <span class="icon-emoji">{{ svc.icon }}</span>
+      </div>
       <h3 class="service-name">{{ svc.name }}</h3>
       <p class="service-desc">{{ svc.desc }}</p>
-      <p class="service-price">Starting at <strong>₹{{ svc.price }}</strong></p>
-      <button class="btn-book">Book Now</button>
+      <div class="service-footer">
+        <p class="service-price">Starting at <strong>₹{{ svc.price }}</strong></p>
+        <button class="btn-book-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
     </div>
     }
   </div>
@@ -40,40 +76,43 @@
 
 <!-- ===== STATS SECTION ===== -->
 <section class="stats-section">
-  <h2 class="stats-title">TRUSTED BY 10,000+ HOMES</h2>
-  <div class="stats-grid">
-    @for (stat of stats; track stat.label) {
-    <div class="stat-item">
-      <span class="stat-icon">{{ stat.icon }}</span>
-      <div class="stat-value">{{ stat.value }}</div>
-      <div class="stat-label">{{ stat.label }}</div>
+  <div class="stats-inner glass-panel-dark">
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+      <div class="stat-item">
+        <span class="stat-icon">{{ stat.icon }}</span>
+        <div class="stat-value counter-animate">{{ stat.value }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+      }
     </div>
-    }
   </div>
 </section>
 
 <!-- ===== WHY CHOOSE US SECTION ===== -->
 <section class="why-section" id="about">
   <div class="why-inner">
-    <h2 class="section-title dark">WHY CHOOSE <span>HOME ASSIST?</span></h2>
+    <div class="section-header">
+      <h2 class="section-title">WHY CHOOSE <span class="text-gradient">HOME ASSIST?</span></h2>
+    </div>
     <div class="why-grid">
-      <div class="why-card">
-        <span class="why-icon">✅</span>
+      <div class="why-card feature-card">
+        <div class="icon-blob blob-1"><span class="why-icon">✅</span></div>
         <h4>Verified Professionals</h4>
         <p>Every provider is background-checked, trained, and rated by real customers.</p>
       </div>
-      <div class="why-card">
-        <span class="why-icon">⚡</span>
+      <div class="why-card feature-card">
+        <div class="icon-blob blob-2"><span class="why-icon">⚡</span></div>
         <h4>Fast Response</h4>
         <p>Get a confirmed booking within minutes. Same-day service available.</p>
       </div>
-      <div class="why-card">
-        <span class="why-icon">💰</span>
+      <div class="why-card feature-card">
+        <div class="icon-blob blob-3"><span class="why-icon">💰</span></div>
         <h4>Transparent Pricing</h4>
         <p>No hidden charges. Fixed upfront pricing with no surprise bills.</p>
       </div>
-      <div class="why-card">
-        <span class="why-icon">🔒</span>
+      <div class="why-card feature-card">
+        <div class="icon-blob blob-4"><span class="why-icon">🔒</span></div>
         <h4>Secure &amp; Safe</h4>
         <p>Insured services and secure online payments. Your home is in safe hands.</p>
       </div>
@@ -83,11 +122,21 @@
 
 <!-- ===== CTA SECTION ===== -->
 <section class="cta-section" id="contact">
-  <div class="cta-inner">
+  <div class="cta-mesh-bg"></div>
+  <div class="cta-inner glass-card">
     <h2>Ready to fix your home?</h2>
     <p>Join thousands of happy homeowners. Book a service in under 2 minutes.</p>
-    <button class="btn-cta" id="cta-get-started" (click)="onCtaClick()" style="border:none; cursor:pointer;">
+    <button class="btn-cta btn-glow-large" id="cta-get-started" (click)="onCtaClick()">
       {{ authService.currentUserValue ? 'GO TO DASHBOARD' : 'JOIN HOMEASSIST FREE' }}
+      <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
     </button>
+    <div class="contact-details" style="margin-top: 2rem; font-size: 0.95rem; opacity: 0.8;">
+      <p style="margin: 0.3rem 0;">📍 Bellandur, Bengaluru</p>
+      <p style="margin: 0.3rem 0;">✉️ info@homeassist.com</p>
+    </div>
   </div>
 </section>
