@@ -8,7 +8,7 @@ export const roleGuard = (roles: string[]): CanActivateFn => {
     const router = inject(Router);
     const currentUser = authService.currentUserValue;
 
-    if (currentUser && roles.includes(currentUser.role)) {
+    if (currentUser && currentUser.role && roles.map(r => r.toLowerCase()).includes(currentUser.role.toLowerCase())) {
       return true;
     }
 

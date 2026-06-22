@@ -17,6 +17,22 @@ export class PublicLayout {
 
   constructor(public authService: AuthService, private router: Router) {}
 
+  goToDashboard() {
+    const user = this.authService.currentUserValue;
+    if (user && user.role) {
+      const role = user.role.toLowerCase();
+      if (role === 'provider') {
+        this.router.navigate(['/provider']);
+      } else if (role === 'admin') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/customer']);
+      }
+    } else {
+      this.router.navigate(['/customer']); // Fallback
+    }
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

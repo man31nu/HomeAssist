@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookingService } from '../../../core/services/booking.service';
+import { ProviderService } from '../../../core/services/provider.service';
 
 @Component({
   selector: 'app-provider-earnings',
@@ -11,6 +12,7 @@ import { BookingService } from '../../../core/services/booking.service';
 })
 export class ProviderEarnings implements OnInit {
   private bookingService = inject(BookingService);
+  private providerService = inject(ProviderService);
 
   completedBookings: any[] = [];
   totalEarnings = 0;
@@ -18,15 +20,25 @@ export class ProviderEarnings implements OnInit {
   loading = true;
 
   ngOnInit(): void {
+    this.fetchData();
+  }
+
+  fetchData(): void {
+    this.loading = true;
+    
+    // Fetch bookings for history
     this.bookingService.getBookings().subscribe({
       next: (res) => {
-        // Filter only completed jobs
         this.completedBookings = res.data.filter((b: any) => b.booking_status === 'completed');
-        
-        // Calculate earnings
         this.totalEarnings = this.completedBookings.reduce((sum, job) => sum + Number(job.total_amount), 0);
-        this.availablePayout = this.totalEarnings; // Assuming they haven't withdrawn yet for MVP
-        
+      },
+      error: () => console.error('Failed to load bookings')
+    });
+
+    // Fetch real payout balance from Provider profile
+    this.providerService.getProviderProfile().subscribe({
+      next: (res) => {
+        this.availablePayout = Number(res.data.wallet_balance || 0);
         this.loading = false;
       },
       error: () => {
@@ -36,7 +48,14 @@ export class ProviderEarnings implements OnInit {
   }
 
   requestPayout() {
-    alert(`Success! ₹${this.availablePayout} has been transferred to your registered bank account.`);
-    this.availablePayout = 0; // Mock payout logic
+    this.providerService.withdrawPayout().subscribe({
+      next: (res) => {
+        alert(res.message);
+        this.availablePayout = 0;
+      },
+      error: (err) => {
+        alert(err.error?.message || 'Failed to withdraw payout');
+      }
+    });
   }
 }

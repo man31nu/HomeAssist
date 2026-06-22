@@ -17,7 +17,7 @@
 
   <div class="hf-nav-actions">
     @if (authService.currentUserValue) {
-      <a routerLink="/{{ authService.currentUserValue.role | lowercase }}" class="hf-btn-outline" id="nav-dashboard">Dashboard</a>
+      <button class="hf-btn-outline" (click)="goToDashboard()" id="nav-dashboard">Dashboard</button>
       <button class="hf-btn-primary" (click)="logout()" id="nav-logout">Logout</button>
     } @else {
       <a routerLink="/login" class="hf-btn-outline" id="nav-login">LOGIN</a>

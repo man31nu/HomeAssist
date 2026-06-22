@@ -70,9 +70,10 @@ export class Home {
   onCtaClick() {
     const user = this.authService.currentUserValue;
     if (user) {
-      if (user.role === 'Provider') {
+      const role = (user.role || '').toLowerCase();
+      if (role === 'provider') {
         this.router.navigate(['/provider']);
-      } else if (user.role === 'Admin') {
+      } else if (role === 'admin') {
         this.router.navigate(['/admin']);
       } else {
         this.router.navigate(['/customer']);

@@ -55,14 +55,14 @@ export class Login {
     this.authService.login(this.loginForm.value)
       .subscribe({
         next: (res) => {
-          const role = res.data.role;
+          const role = (res.data.role || '').toLowerCase();
           if (this.returnUrl && this.returnUrl !== '/') {
             this.router.navigateByUrl(this.returnUrl);
-          } else if (role === 'Customer') {
+          } else if (role === 'customer') {
             this.router.navigate(['/customer']);
-          } else if (role === 'Provider') {
+          } else if (role === 'provider') {
             this.router.navigate(['/provider']);
-          } else if (role === 'Admin') {
+          } else if (role === 'admin') {
             this.router.navigate(['/admin']);
           } else {
             this.router.navigate(['/']);

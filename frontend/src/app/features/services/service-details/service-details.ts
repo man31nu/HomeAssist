@@ -117,6 +117,7 @@ export class ServiceDetails implements OnInit {
     const formVals = this.bookingForm.value;
     const bookingData = {
       service_id: this.service!.id,
+      service_category: this.service!.category,
       scheduled_date: formVals.scheduledDate,
       notes: formVals.notes
     };

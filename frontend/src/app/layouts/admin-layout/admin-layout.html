@@ -1,1 +1,61 @@
-<p>admin-layout works!</p>
+<div class="admin-portal">
+  <!-- Top Navbar -->
+  <header class="topbar">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#1565C0" />
+        <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#1565C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span>HOME<strong>ASSIST</strong> <span>ADMIN</span></span>
+    </div>
+
+    <div class="user-menu">
+      <span class="user-greeting">Hello, {{ currentUser?.name || 'Administrator' }}</span>
+      <button class="btn-logout" (click)="logout()">
+        <span>Logout</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="portal-body">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <a routerLink="/admin/overview" routerLinkActive="active" class="nav-item">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+          <span class="icon">👥</span>
+          <span>Customers</span>
+        </a>
+        <a routerLink="/admin/providers" routerLinkActive="active" class="nav-item">
+          <span class="icon">💼</span>
+          <span>Providers</span>
+        </a>
+        <a routerLink="/admin/services" routerLinkActive="active" class="nav-item">
+          <span class="icon">🛠️</span>
+          <span>Services</span>
+        </a>
+        <a routerLink="/admin/bookings" routerLinkActive="active" class="nav-item">
+          <span class="icon">📅</span>
+          <span>All Bookings</span>
+        </a>
+        <a routerLink="/admin/tickets" routerLinkActive="active" class="nav-item">
+          <span class="icon">🎫</span>
+          <span>Support Tickets</span>
+        </a>
+        <a routerLink="/services" class="nav-item back-home">
+          <span class="icon">🌐</span>
+          <span>Public Site</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -73,7 +73,7 @@
           <div class="alert-error">{{ error }}</div>
         }
 
-        <form [formGroup]="bookingForm" (ngSubmit)="onSubmitBooking()">
+        <form [formGroup]="bookingForm">
           <div class="form-group">
             <label>Scheduled Date & Time</label>
             <input type="datetime-local" formControlName="scheduledDate" class="form-input"
@@ -91,7 +91,7 @@
             <textarea formControlName="notes" rows="2" placeholder="Any special requirements..." class="form-input"></textarea>
           </div>
 
-          <button type="submit" class="btn-confirm" [disabled]="bookingLoading">
+          <button type="button" class="btn-confirm" (click)="onSubmitBooking()" [disabled]="bookingLoading">
             @if (bookingLoading) { <span class="spinner"></span> }
             {{ authService.currentUserValue ? (bookingLoading ? 'Confirming...' : 'Confirm Booking') : 'Login to Book' }}
           </button>

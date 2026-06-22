@@ -69,16 +69,18 @@ export class ServicesList implements OnInit {
     if (this.activeCategory !== 'All') {
       result = result.filter(s => s.category === this.activeCategory);
     }
-    if (this.searchQuery.trim()) {
-      result = result.filter(s =>
-        s.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        (s.description || '').toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+    if (this.searchQuery) {
+      result = result.filter(s => {
+        const serviceName = s.name || (s as any).title || '';
+        return serviceName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+               (s.description || '').toLowerCase().includes(this.searchQuery.toLowerCase());
+      });
     }
     this.filteredServices = result;
   }
 
-  getIcon(category: string): string {
+  getIcon(category: string | undefined): string {
+    if (!category) return '🛠️';
     return this.categoryIcons[category] || '🏠';
   }
 }

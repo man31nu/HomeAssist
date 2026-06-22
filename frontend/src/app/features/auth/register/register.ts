@@ -40,6 +40,7 @@ export class Register {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['Customer', Validators.required],
+      service_category: ['Electrician'], // default, only used if Provider
       phone: [''],
       address: ['']
     });
@@ -59,8 +60,11 @@ export class Register {
 
     // Send only the fields the backend accepts
     // (address is in a separate table; omit from register payload)
-    const { name, email, password, role, phone } = this.registerForm.value;
+    const { name, email, password, role, service_category, phone } = this.registerForm.value;
     const payload: any = { name, email, password, role };
+    if (role === 'Provider') {
+      payload.service_category = service_category;
+    }
     if (phone) payload.phone = phone;
 
     this.authService.register(payload)

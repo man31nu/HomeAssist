@@ -39,12 +39,22 @@ export const routes: Routes = [
       { path: 'profile', loadComponent: () => import('./features/provider/provider-profile/provider-profile').then(m => m.ProviderProfile) }
     ]
   },
+  { 
+    path: 'admin/login', 
+    loadComponent: () => import('./features/admin/admin-login/admin-login').then(m => m.AdminLoginComponent) 
+  },
   {
     path: 'admin',
     component: AdminLayout,
     canActivate: [authGuard, adminGuard],
     children: [
-      { path: '', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard) }
+      { path: '', redirectTo: 'overview', pathMatch: 'full' },
+      { path: 'overview', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard) },
+      { path: 'users', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard) },
+      { path: 'providers', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard) },
+      { path: 'services', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard) },
+      { path: 'bookings', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard) },
+      { path: 'tickets', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard) }
     ]
   },
   { path: '**', redirectTo: '' }
