@@ -29,7 +29,7 @@ router.route('/:id')
 router.route('/:id/status')
   .put(
     [
-      check('status', 'Valid status is required').isIn(['Pending', 'Accepted', 'InProgress', 'Completed', 'Cancelled'])
+      check('status', 'Valid status is required').isIn(['pending', 'confirmed', 'assigned', 'in_progress', 'completed', 'cancelled'])
     ],
     validate,
     updateBookingStatus

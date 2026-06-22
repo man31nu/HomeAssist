@@ -13,7 +13,12 @@ const Provider = sequelize.define('Provider', {
   },
   service_id: {
     type: DataTypes.BIGINT,
+    allowNull: true,
+  },
+  service_category: {
+    type: DataTypes.ENUM('Electrician', 'Carpenter', 'Plumber', 'Cleaning', 'AC Repair', 'Appliance Repair'),
     allowNull: false,
+    defaultValue: 'Electrician',
   },
   experience_years: {
     type: DataTypes.INTEGER,
@@ -39,6 +44,10 @@ const Provider = sequelize.define('Provider', {
   total_jobs_completed: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
+  },
+  wallet_balance: {
+    type: DataTypes.DECIMAL(10, 2),
+    defaultValue: 0.00,
   },
 }, {
   tableName: 'providers',

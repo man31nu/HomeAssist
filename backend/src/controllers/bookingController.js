@@ -4,16 +4,21 @@ const apiResponse = require('../utils/apiResponse');
 const getBookings = async (req, res, next) => {
   try {
     let whereClause = {};
-    if (req.user.role === 'Customer') {
+    if (req.user.role.toLowerCase() === 'customer') {
       whereClause.customer_id = req.user.id;
-    } else if (req.user.role === 'Provider') {
+    } else if (req.user.role.toLowerCase() === 'provider') {
       const provider = await Provider.findOne({ where: { user_id: req.user.id } });
       if (provider) {
         const { Op } = require('sequelize');
         whereClause = {
-          [Op.or]: [
-            { provider_id: provider.id },
-            { provider_id: null }
+          [Op.and]: [
+            { service_category: provider.service_category },
+            {
+              [Op.or]: [
+                { provider_id: provider.id },
+                { provider_id: null }
+              ]
+            }
           ]
         };
       } else {
@@ -52,9 +57,9 @@ const getBookingById = async (req, res, next) => {
     }
 
     let isAuthorized = false;
-    if (req.user.role === 'Admin') isAuthorized = true;
-    else if (req.user.role === 'Customer' && Number(booking.customer_id) === Number(req.user.id)) isAuthorized = true;
-    else if (req.user.role === 'Provider' && booking.Provider && Number(booking.Provider.user_id) === Number(req.user.id)) isAuthorized = true;
+    if (req.user.role.toLowerCase() === 'admin') isAuthorized = true;
+    else if (req.user.role.toLowerCase() === 'customer' && Number(booking.customer_id) === Number(req.user.id)) isAuthorized = true;
+    else if (req.user.role.toLowerCase() === 'provider' && booking.Provider && Number(booking.Provider.user_id) === Number(req.user.id)) isAuthorized = true;
 
     if (!isAuthorized) {
       return apiResponse.error(res, 'Not authorized to view this booking', null, 403);
@@ -68,7 +73,7 @@ const getBookingById = async (req, res, next) => {
 
 const createBooking = async (req, res, next) => {
   try {
-    const { provider_id, service_id, scheduled_date, scheduled_time, notes, couponCode } = req.body;
+    const { provider_id, service_id, service_category, scheduled_date, scheduled_time, notes, couponCode } = req.body;
 
     const service = await Service.findByPk(service_id);
     if (!service) return apiResponse.error(res, 'Service not found', null, 404);
@@ -92,13 +97,25 @@ const createBooking = async (req, res, next) => {
     // Generate unique booking number
     const booking_number = `BK-${Date.now()}`;
 
+    // Extract time from datetime string if scheduled_time is missing
+    let final_time = scheduled_time;
+    let final_date = scheduled_date;
+    if (scheduled_date && !scheduled_time) {
+      const dateObj = new Date(scheduled_date);
+      if (!isNaN(dateObj.getTime())) {
+        final_time = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}:00`;
+        final_date = scheduled_date.split('T')[0];
+      }
+    }
+
     const booking = await Booking.create({
       booking_number,
       customer_id: req.user.id,
       provider_id: provider_id || null,
       service_id,
-      scheduled_date: scheduled_date || null,
-      scheduled_time: scheduled_time || null,
+      service_category: service_category || 'Electrician',
+      scheduled_date: final_date || null,
+      scheduled_time: final_time || '00:00:00',
       total_amount,
       final_amount: total_amount,
       booking_status: 'pending',
@@ -146,14 +163,14 @@ const updateBookingStatus = async (req, res, next) => {
     }
 
     let isAuthorized = false;
-    if (req.user.role === 'Admin') {
+    if (req.user.role.toLowerCase() === 'admin') {
       isAuthorized = true;
-    } else if (req.user.role === 'Provider') {
+    } else if (req.user.role.toLowerCase() === 'provider') {
       // If it's unassigned or assigned to this provider, allow them to update it
       if (!booking.provider_id || (booking.Provider && Number(booking.Provider.user_id) === Number(req.user.id))) {
         if (['confirmed', 'assigned', 'in_progress', 'completed'].includes(status)) isAuthorized = true;
       }
-    } else if (req.user.role === 'Customer' && Number(booking.customer_id) === Number(req.user.id)) {
+    } else if (req.user.role.toLowerCase() === 'customer' && Number(booking.customer_id) === Number(req.user.id)) {
       if (status === 'cancelled') isAuthorized = true;
     }
 
@@ -164,11 +181,21 @@ const updateBookingStatus = async (req, res, next) => {
     const old_status = booking.booking_status;
     booking.booking_status = status;
     
-    // Assign provider if they are confirming an unassigned booking
-    if (req.user.role === 'Provider' && !booking.provider_id && (status === 'confirmed' || status === 'assigned')) {
+    // Assign provider if they are taking action on an unassigned booking
+    if (req.user.role.toLowerCase() === 'provider' && !booking.provider_id) {
       const provider = await Provider.findOne({ where: { user_id: req.user.id } });
       if (provider) {
         booking.provider_id = provider.id;
+      }
+    }
+
+    // If completed, update provider stats (optional but good practice)
+    if (status === 'completed' && old_status !== 'completed' && booking.provider_id) {
+      const provider = await Provider.findByPk(booking.provider_id);
+      if (provider) {
+        provider.total_jobs_completed = (provider.total_jobs_completed || 0) + 1;
+        provider.wallet_balance = parseFloat(provider.wallet_balance || 0) + parseFloat(booking.final_amount || booking.total_amount || 0);
+        await provider.save();
       }
     }
 

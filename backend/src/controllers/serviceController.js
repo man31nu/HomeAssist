@@ -43,19 +43,20 @@ const getServiceById = async (req, res, next) => {
 
 const createService = async (req, res, next) => {
   try {
-    const { title, description, category_id, base_price, estimated_duration } = req.body;
+    const { title, name, description, category_id, categoryId, base_price, basePrice, estimated_duration, estimatedDuration } = req.body;
 
-    const category = await ServiceCategory.findByPk(category_id);
+    const actualCategoryId = category_id || categoryId;
+    const category = await ServiceCategory.findByPk(actualCategoryId);
     if (!category) {
       return apiResponse.error(res, 'Invalid Category ID', null, 400);
     }
 
     const service = await Service.create({
-      title,
+      title: title || name,
       description,
-      category_id,
-      base_price,
-      estimated_duration: estimated_duration || null,
+      category_id: actualCategoryId,
+      base_price: base_price !== undefined ? base_price : basePrice,
+      estimated_duration: estimated_duration !== undefined ? estimated_duration : (estimatedDuration || null),
       status: 'active',
     });
     return apiResponse.success(res, 'Service created successfully', service, 201);
@@ -71,12 +72,18 @@ const updateService = async (req, res, next) => {
       return apiResponse.error(res, 'Service not found', null, 404);
     }
 
-    const { title, description, category_id, base_price, estimated_duration, status } = req.body;
-    if (title !== undefined) service.title = title;
+    const { title, name, description, category_id, categoryId, base_price, basePrice, estimated_duration, estimatedDuration, status } = req.body;
+    
+    const newTitle = title || name;
+    const newCategoryId = category_id || categoryId;
+    const newBasePrice = base_price !== undefined ? base_price : basePrice;
+    const newEstimatedDuration = estimated_duration !== undefined ? estimated_duration : estimatedDuration;
+
+    if (newTitle !== undefined) service.title = newTitle;
     if (description !== undefined) service.description = description;
-    if (category_id !== undefined) service.category_id = category_id;
-    if (base_price !== undefined) service.base_price = base_price;
-    if (estimated_duration !== undefined) service.estimated_duration = estimated_duration;
+    if (newCategoryId !== undefined) service.category_id = newCategoryId;
+    if (newBasePrice !== undefined) service.base_price = newBasePrice;
+    if (newEstimatedDuration !== undefined) service.estimated_duration = newEstimatedDuration;
     if (status !== undefined) service.status = status;
 
     await service.save();

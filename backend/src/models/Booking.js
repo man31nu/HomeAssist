@@ -24,6 +24,11 @@ const Booking = sequelize.define('Booking', {
     type: DataTypes.BIGINT,
     allowNull: false,
   },
+  service_category: {
+    type: DataTypes.ENUM('Electrician', 'Carpenter', 'Plumber', 'Cleaning', 'AC Repair', 'Appliance Repair'),
+    allowNull: false,
+    defaultValue: 'Electrician',
+  },
   scheduled_date: {
     type: DataTypes.DATEONLY,
     allowNull: true,

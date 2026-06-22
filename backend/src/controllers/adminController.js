@@ -36,7 +36,32 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const updateProviderCategory = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { category } = req.body;
+
+    const provider = await Provider.findByPk(id);
+    if (!provider) {
+      return apiResponse.error(res, 'Provider not found', null, 404);
+    }
+
+    const validCategories = ['Electrician', 'Carpenter', 'Plumber', 'Cleaning', 'AC Repair', 'Appliance Repair'];
+    if (!validCategories.includes(category)) {
+      return apiResponse.error(res, 'Invalid service category', null, 400);
+    }
+
+    provider.service_category = category;
+    await provider.save();
+
+    return apiResponse.success(res, 'Provider category updated successfully', provider);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getDashboardStats,
   getAllUsers,
+  updateProviderCategory,
 };

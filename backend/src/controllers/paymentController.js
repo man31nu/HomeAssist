@@ -1,4 +1,4 @@
-const { Payment, Booking, Notification } = require('../models');
+const { Payment, Booking, Notification, Service, User } = require('../models');
 const apiResponse = require('../utils/apiResponse');
 
 const processPayment = async (req, res, next) => {
@@ -10,7 +10,7 @@ const processPayment = async (req, res, next) => {
       return apiResponse.error(res, 'Booking not found', null, 404);
     }
 
-    if (Number(booking.customer_id) !== Number(req.user.id) && req.user.role !== 'Admin') {
+    if (Number(booking.customer_id) !== Number(req.user.id) && req.user.role.toLowerCase() !== 'admin') {
       return apiResponse.error(res, 'Not authorized', null, 403);
     }
 
@@ -54,7 +54,7 @@ const crypto = require('crypto');
 const getPayments = async (req, res, next) => {
   try {
     let whereClause = {};
-    if (req.user.role === 'Customer') {
+    if (req.user.role.toLowerCase() === 'customer') {
       const bookings = await Booking.findAll({
         where: { customer_id: req.user.id },
         attributes: ['id']
@@ -81,7 +81,12 @@ const createRazorpayOrder = async (req, res, next) => {
   try {
     const { booking_id } = req.body;
     
-    const booking = await Booking.findByPk(booking_id);
+    const booking = await Booking.findByPk(booking_id, {
+      include: [
+        { model: Service, attributes: ['title'] },
+        { model: User, as: 'Customer', attributes: ['email', 'full_name'] }
+      ]
+    });
     if (!booking) return apiResponse.error(res, 'Booking not found', null, 404);
 
     // Make sure user owns the booking
@@ -99,6 +104,13 @@ const createRazorpayOrder = async (req, res, next) => {
       amount: Math.round(Number(booking.final_amount) * 100),
       currency: 'INR',
       receipt: `receipt_order_${booking.id}`,
+      notes: {
+        booking_id: booking.id.toString(),
+        booking_number: booking.booking_number || '',
+        service_title: booking.Service ? booking.Service.title : 'Unknown Service',
+        customer_name: booking.Customer ? booking.Customer.full_name : 'Unknown',
+        customer_email: booking.Customer ? booking.Customer.email : 'Unknown'
+      }
     };
 
     const order = await razorpay.orders.create(options);

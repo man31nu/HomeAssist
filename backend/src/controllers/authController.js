@@ -52,8 +52,10 @@ const register = async (req, res, next) => {
     // Create provider profile if role is Provider
     if (roleName === 'Provider') {
       const { Provider } = require('../models');
+      const serviceCategory = req.body.service_category || 'Electrician'; // Default fallback
       await Provider.create({
         user_id: user.id,
+        service_category: serviceCategory,
         experience_years: 0,
         is_verified: false,
         rating: 0,

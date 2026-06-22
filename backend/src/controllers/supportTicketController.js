@@ -21,7 +21,7 @@ const createTicket = async (req, res, next) => {
 const getTickets = async (req, res, next) => {
   try {
     let whereClause = {};
-    if (req.user.role !== 'Admin') {
+    if (req.user.role.toLowerCase() !== 'admin') {
       whereClause.user_id = req.user.id;
     }
 
@@ -40,6 +40,10 @@ const updateTicketStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
     const ticket = await SupportTicket.findByPk(req.params.id);
+
+    if (req.user.role.toLowerCase() !== 'admin') {
+      return apiResponse.error(res, 'Not authorized', null, 403);
+    }
 
     if (!ticket) {
       return apiResponse.error(res, 'Ticket not found', null, 404);

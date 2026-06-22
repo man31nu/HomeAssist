@@ -15,6 +15,21 @@ const getProviders = async (req, res, next) => {
   }
 };
 
+const getProvidersByCategory = async (req, res, next) => {
+  try {
+    const { category } = req.params;
+    const providers = await Provider.findAll({
+      where: { service_category: category },
+      include: [
+        { model: User, attributes: ['id', 'full_name', 'email', 'phone'] }
+      ]
+    });
+    return apiResponse.success(res, 'Providers fetched successfully', providers);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getProviderById = async (req, res, next) => {
   try {
     const provider = await Provider.findByPk(req.params.id, {
@@ -96,10 +111,53 @@ const approveProvider = async (req, res, next) => {
   }
 };
 
+const getMyProfile = async (req, res, next) => {
+  try {
+    const provider = await Provider.findOne({
+      where: { user_id: req.user.id },
+      include: [
+        { model: User, attributes: ['id', 'full_name', 'email', 'phone'] },
+        { model: Service, attributes: ['id', 'title'] }
+      ]
+    });
+    if (provider) {
+      return apiResponse.success(res, 'Profile fetched successfully', provider);
+    } else {
+      return apiResponse.error(res, 'Provider profile not found', null, 404);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const withdrawPayout = async (req, res, next) => {
+  try {
+    const provider = await Provider.findOne({ where: { user_id: req.user.id } });
+    if (!provider) {
+      return apiResponse.error(res, 'Provider profile not found', null, 404);
+    }
+
+    if (parseFloat(provider.wallet_balance || 0) <= 0) {
+      return apiResponse.error(res, 'No funds available to withdraw', null, 400);
+    }
+
+    const amountWithdrawn = provider.wallet_balance;
+    provider.wallet_balance = 0.00;
+    await provider.save();
+
+    return apiResponse.success(res, `Successfully withdrew ₹${amountWithdrawn}`, provider);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getProviders,
+  getProvidersByCategory,
   getProviderById,
   registerProviderProfile,
   updateProviderProfile,
   approveProvider,
+  getMyProfile,
+  withdrawPayout,
 };
