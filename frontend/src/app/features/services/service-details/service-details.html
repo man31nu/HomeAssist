@@ -1,0 +1,116 @@
+<!-- SERVICE DETAILS & BOOKING -->
+@if (loading) {
+  <div class="page-loading">
+    <div class="spinner-large"></div>
+    <p>Loading service details...</p>
+  </div>
+}
+
+@if (!loading && error) {
+  <div class="error-page">
+    <span>⚠️</span>
+    <h2>{{ error }}</h2>
+    <a routerLink="/services" class="btn-back">← Back to Services</a>
+  </div>
+}
+
+@if (!loading && service && !bookingSuccess) {
+  <div class="details-page">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a routerLink="/services">Services</a>
+      <span>›</span>
+      <span>{{ service.name }}</span>
+    </div>
+
+    <div class="details-layout">
+      <!-- LEFT: Service Info -->
+      <div class="service-info">
+        <div class="service-header">
+          <div class="service-badge">{{ service.category }}</div>
+          <h1>{{ service.name }}</h1>
+          <p>{{ service.description }}</p>
+        </div>
+
+        <div class="price-row">
+          <div class="price-block">
+            <span class="price-label">Starting from</span>
+            <span class="price-value">₹{{ service.basePrice }}</span>
+          </div>
+        </div>
+
+        <div class="includes">
+          <h3>What's Included</h3>
+          <ul>
+            <li>✅ Verified & trained professional</li>
+            <li>✅ Post-service cleanup</li>
+            <li>✅ Satisfaction guarantee</li>
+            <li>✅ On-time service commitment</li>
+            <li>✅ Transparent pricing, no hidden fees</li>
+          </ul>
+        </div>
+
+        <div class="why-us">
+          <div class="why-item"><span>🔒</span><div><strong>Insured Work</strong><p>All jobs are fully insured</p></div></div>
+          <div class="why-item"><span>⭐</span><div><strong>4.9 Rated</strong><p>Trusted by 10,000+ customers</p></div></div>
+          <div class="why-item"><span>📞</span><div><strong>24/7 Support</strong><p>Always available to help</p></div></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Booking Form -->
+      <div class="booking-panel">
+        <div class="booking-header">
+          <h2>Book This Service</h2>
+          <p>Fill in the details and we'll take care of the rest</p>
+        </div>
+
+        <div class="booking-price">
+          <span>Price</span>
+          <strong>₹{{ service.basePrice }}</strong>
+        </div>
+
+        @if (error) {
+          <div class="alert-error">{{ error }}</div>
+        }
+
+        <form [formGroup]="bookingForm" (ngSubmit)="onSubmitBooking()">
+          <div class="form-group">
+            <label>Scheduled Date & Time</label>
+            <input type="datetime-local" formControlName="scheduledDate" class="form-input"
+                   [class.input-error]="bookingForm.get('scheduledDate')?.invalid && bookingForm.get('scheduledDate')?.touched">
+          </div>
+
+          <div class="form-group">
+            <label>Service Address</label>
+            <textarea formControlName="address" rows="3" placeholder="Enter your full address..." class="form-input"
+                      [class.input-error]="bookingForm.get('address')?.invalid && bookingForm.get('address')?.touched"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Additional Notes <span class="opt">(Optional)</span></label>
+            <textarea formControlName="notes" rows="2" placeholder="Any special requirements..." class="form-input"></textarea>
+          </div>
+
+          <button type="submit" class="btn-confirm" [disabled]="bookingLoading">
+            @if (bookingLoading) { <span class="spinner"></span> }
+            {{ authService.currentUserValue ? (bookingLoading ? 'Confirming...' : 'Confirm Booking') : 'Login to Book' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- SUCCESS STATE -->
+@if (bookingSuccess) {
+  <div class="success-page">
+    <div class="success-card">
+      <div class="success-icon">✅</div>
+      <h2>Payment Successful & Booking Confirmed!</h2>
+      <p>Your service has been successfully scheduled. Track its status in your dashboard.</p>
+      <a routerLink="/customer" class="btn-dashboard">Go to Dashboard →</a>
+    </div>
+  </div>
+}
+
+

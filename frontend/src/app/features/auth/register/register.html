@@ -1,0 +1,92 @@
+<!-- REGISTER PAGE -->
+<div class="auth-page">
+  <!-- Side Panel -->
+  <div class="auth-panel">
+    <div class="panel-content">
+      <h2>Join HomeAssist<br>Today</h2>
+      <p>Book trusted professionals for every home need. Register as a customer or sign up to offer your services.</p>
+      <div class="panel-badges">
+        <span class="badge-item">✅ Verified Pros</span>
+        <span class="badge-item">💳 Secure Payments</span>
+        <span class="badge-item">⭐ Rated 4.9/5</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z" fill="#2E7D32" />
+      </svg>
+      <span>HOME <strong>ASSIST</strong></span>
+    </div>
+
+    <h2 class="auth-title">Create Account</h2>
+    <p class="auth-subtitle">Join thousands of happy homeowners</p>
+
+    <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" formControlName="name" placeholder="John Doe" class="form-input"
+          [class.input-error]="submitted && f['name'].errors">
+        <span class="field-error" *ngIf="submitted && f['name'].errors?.['required']">Name is required</span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" formControlName="email" placeholder="you@example.com" class="form-input"
+            [class.input-error]="submitted && f['email'].errors">
+          <span class="field-error" *ngIf="submitted && f['email'].errors?.['required']">Email is required</span>
+          <span class="field-error" *ngIf="submitted && f['email'].errors?.['email']">Enter a valid email</span>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" formControlName="phone" placeholder="+91 00000 00000" class="form-input">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Min. 6 characters" class="form-input"
+          [class.input-error]="submitted && f['password'].errors">
+        <span class="field-error" *ngIf="submitted && f['password'].errors?.['required']">Password is required</span>
+        <span class="field-error" *ngIf="submitted && f['password'].errors?.['minlength']">Minimum 6 characters</span>
+      </div>
+
+      <div class="form-group">
+        <label>I am registering as</label>
+        <div class="role-selector">
+          <label class="role-option" [class.active]="registerForm.get('role')?.value === 'Customer'"
+            (click)="registerForm.get('role')?.setValue('Customer')">
+            <span class="role-icon">🏠</span>
+            <span class="role-label">Customer</span>
+            <span class="role-desc">Book services</span>
+          </label>
+          <label class="role-option" [class.active]="registerForm.get('role')?.value === 'Provider'"
+            (click)="registerForm.get('role')?.setValue('Provider')">
+            <span class="role-icon">🔧</span>
+            <span class="role-label">Provider</span>
+            <span class="role-desc">Offer services</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Address <span class="optional">(Optional)</span></label>
+        <input type="text" formControlName="address" placeholder="Your area or city" class="form-input">
+      </div>
+
+      <button type="submit" class="btn-auth" [disabled]="loading">
+        <span *ngIf="loading" class="spinner"></span>
+        {{ loading ? 'Creating Account...' : 'Create Account' }}
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <a routerLink="/login">Already have an account? <strong>Sign In</strong></a>
+    </div>
+  </div>
+</div>

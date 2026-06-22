@@ -1,0 +1,93 @@
+<!-- ===== HERO SECTION ===== -->
+<section class="hero-section">
+  <div class="hero-bg-blur"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 class="hero-title">YOUR TRUSTED<br><span>HOME EXPERTS</span></h1>
+      <p class="hero-subtitle">
+        Professional Home Services by <strong>HomeAssist</strong>: Cleaning,<br>
+        Carpenter, Plumber &amp; Electrician. At Your Doorstep.
+      </p>
+      <div class="hero-search">
+        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+          placeholder="Find the service you need..." class="search-input" id="hero-search-input" />
+        <span class="search-divider"></span>
+        <button class="search-icon-btn" aria-label="search icon">🔍</button>
+        <button class="btn-search" (click)="onSearch()">SEARCH</button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="image.png" alt="HomeAssist Professionals – Cleaner, Carpenter, Plumber, Electrician" />
+    </div>
+  </div>
+</section>
+
+<!-- ===== SELECT SERVICE SECTION ===== -->
+<section class="services-section" id="services">
+  <h2 class="section-title">SELECT SERVICE</h2>
+  <div class="services-grid">
+    @for (svc of services; track svc.name) {
+    <div class="service-card" (click)="bookService(svc.category)" [id]="'service-' + svc.category.toLowerCase()">
+      <div class="service-icon-wrap">{{ svc.icon }}</div>
+      <h3 class="service-name">{{ svc.name }}</h3>
+      <p class="service-desc">{{ svc.desc }}</p>
+      <p class="service-price">Starting at <strong>₹{{ svc.price }}</strong></p>
+      <button class="btn-book">Book Now</button>
+    </div>
+    }
+  </div>
+</section>
+
+<!-- ===== STATS SECTION ===== -->
+<section class="stats-section">
+  <h2 class="stats-title">TRUSTED BY 10,000+ HOMES</h2>
+  <div class="stats-grid">
+    @for (stat of stats; track stat.label) {
+    <div class="stat-item">
+      <span class="stat-icon">{{ stat.icon }}</span>
+      <div class="stat-value">{{ stat.value }}</div>
+      <div class="stat-label">{{ stat.label }}</div>
+    </div>
+    }
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE US SECTION ===== -->
+<section class="why-section" id="about">
+  <div class="why-inner">
+    <h2 class="section-title dark">WHY CHOOSE <span>HOME ASSIST?</span></h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="why-icon">✅</span>
+        <h4>Verified Professionals</h4>
+        <p>Every provider is background-checked, trained, and rated by real customers.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">⚡</span>
+        <h4>Fast Response</h4>
+        <p>Get a confirmed booking within minutes. Same-day service available.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">💰</span>
+        <h4>Transparent Pricing</h4>
+        <p>No hidden charges. Fixed upfront pricing with no surprise bills.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🔒</span>
+        <h4>Secure &amp; Safe</h4>
+        <p>Insured services and secure online payments. Your home is in safe hands.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA SECTION ===== -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <h2>Ready to fix your home?</h2>
+    <p>Join thousands of happy homeowners. Book a service in under 2 minutes.</p>
+    <button class="btn-cta" id="cta-get-started" (click)="onCtaClick()" style="border:none; cursor:pointer;">
+      {{ authService.currentUserValue ? 'GO TO DASHBOARD' : 'JOIN HOMEASSIST FREE' }}
+    </button>
+  </div>
+</section>

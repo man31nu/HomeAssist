@@ -1,0 +1,56 @@
+<div class="earnings-container">
+  <div class="header">
+    <h1>Earnings & Payouts</h1>
+    <p>Track your completed jobs and request payouts to your bank account.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card total">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <h3>Total Lifetime Earnings</h3>
+        <span class="stat-value">₹{{ totalEarnings }}</span>
+      </div>
+    </div>
+    <div class="stat-card pending">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <h3>Available for Payout</h3>
+        <span class="stat-value">₹{{ availablePayout }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="payout-section">
+    <div class="payout-card">
+      <h2>Request Payout</h2>
+      <p>Transfer your available balance to your registered bank account.</p>
+      <button class="btn-primary" [disabled]="availablePayout === 0" (click)="requestPayout()">
+        Withdraw ₹{{ availablePayout }}
+      </button>
+    </div>
+  </div>
+
+  <div class="history-section">
+    <h2>Recent Completed Jobs</h2>
+    @if (completedBookings.length === 0) {
+      <div class="empty-state">
+        <p>You haven't completed any jobs yet to earn money.</p>
+      </div>
+    } @else {
+      <div class="job-list">
+        @for (job of completedBookings; track job.id) {
+          <div class="job-card">
+            <div class="job-info">
+              <h4>{{ job.Service?.title }}</h4>
+              <p>{{ job.scheduled_date | date }} • Customer: {{ job.Customer?.full_name }}</p>
+            </div>
+            <div class="job-amount">
+              +₹{{ job.total_amount }}
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

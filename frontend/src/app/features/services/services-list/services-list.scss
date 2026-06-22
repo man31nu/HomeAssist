@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:host { display: block; font-family: 'Inter', sans-serif; }
+
+.services-page { background: #f5f7fa; min-height: 100vh; }
+
+// Header
+.page-header {
+  background: linear-gradient(135deg, #2E7D32, #1b5e20);
+  padding: 3rem 2.5rem;
+  color: #fff;
+}
+
+.page-header-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+
+  h1 { font-size: 2.2rem; font-weight: 900; margin: 0 0 0.5rem; }
+  p { font-size: 1rem; opacity: 0.85; margin: 0 0 1.75rem; }
+}
+
+.search-bar {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+
+  .si {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.75rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    box-sizing: border-box;
+  }
+}
+
+// Body
+.services-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+// Category Tabs
+.category-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.cat-tab {
+  padding: 0.5rem 1.25rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  color: #374151;
+  transition: all 0.2s;
+
+  &:hover { border-color: #2E7D32; color: #2E7D32; }
+  &.active {
+    background: #2E7D32;
+    border-color: #2E7D32;
+    color: #fff;
+  }
+}
+
+// Services Grid
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(46,125,50,0.12);
+  }
+}
+
+.card-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.card-category { font-size: 0.75rem; font-weight: 700; color: #2E7D32; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.4rem; }
+.card-name { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin: 0 0 0.6rem; }
+.card-desc { font-size: 0.875rem; color: #6b7280; line-height: 1.5; flex: 1; margin: 0 0 1.25rem; }
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.card-price {
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.3;
+
+  strong { font-size: 1.2rem; color: #2E7D32; font-weight: 800; display: block; }
+}
+
+.btn-book {
+  padding: 0.6rem 1.25rem;
+  background: #2E7D32;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+
+  &:hover { background: #1b5e20; }
+}
+
+// Skeleton
+.loading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.skeleton-card {
+  height: 280px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  border-radius: 16px;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// Error
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+// Empty
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+
+  span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+  h3 { font-size: 1.3rem; font-weight: 700; color: #374151; margin: 0 0 0.5rem; }
+  p { margin: 0 0 1.5rem; font-size: 0.95rem; }
+}
+
+.btn-reset {
+  padding: 0.65rem 1.5rem;
+  background: #2E7D32;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+}

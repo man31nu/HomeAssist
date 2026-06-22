@@ -1,0 +1,102 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>My Dashboard</h1>
+    <p>Manage your home service bookings</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📅</div>
+      <div class="stat-info">
+        <h3>Active Bookings</h3>
+        <span class="stat-value">{{ activeBookings.length }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3>Completed Services</h3>
+        <span class="stat-value">{{ pastBookings.length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bookings-section">
+    <mat-tab-group animationDuration="0ms">
+      
+      <!-- Active Bookings Tab -->
+      <mat-tab label="Active Bookings">
+        <div class="tab-content">
+          @if (loading) {
+            <div class="loading-state">Loading your bookings...</div>
+          } @else if (activeBookings.length === 0) {
+            <div class="empty-state">
+              <div class="empty-icon">🏠</div>
+              <h3>No active bookings</h3>
+              <p>You haven't booked any services currently. Ready to get your home sorted?</p>
+              <button class="btn-primary" routerLink="/services">Browse Services</button>
+            </div>
+          } @else {
+            <div class="booking-list">
+              @for (booking of activeBookings; track booking.id) {
+                <div class="booking-card">
+                  <div class="card-header">
+                    <span class="service-name">{{ booking.Service?.title || 'Unknown Service' }}</span>
+                    <span class="status-badge" [ngClass]="booking.booking_status">
+                      {{ booking.booking_status | uppercase }}
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <p><strong>Booking ID:</strong> {{ booking.booking_number }}</p>
+                    <p><strong>Date:</strong> {{ booking.scheduled_date | date:'longDate' }}</p>
+                    <p><strong>Provider:</strong> {{ booking.Provider?.User?.full_name || 'Assigning soon...' }}</p>
+                    <p><strong>Total:</strong> ₹{{ booking.final_amount }}</p>
+                  </div>
+                  <div class="card-actions">
+                    <button class="btn-primary" *ngIf="booking.booking_status === 'pending'" (click)="payBooking(booking)" style="margin-right: 10px;">Pay Now</button>
+                    <button class="btn-cancel" *ngIf="booking.booking_status === 'pending'" (click)="cancelBooking(booking.id)">Cancel Booking</button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+      <!-- Past Bookings Tab -->
+      <mat-tab label="Past Bookings">
+        <div class="tab-content">
+          @if (loading) {
+            <div class="loading-state">Loading your past bookings...</div>
+          } @else if (pastBookings.length === 0) {
+            <div class="empty-state">
+              <div class="empty-icon">📂</div>
+              <h3>No past history</h3>
+              <p>You have no completed or cancelled bookings yet.</p>
+            </div>
+          } @else {
+            <div class="booking-list">
+              @for (booking of pastBookings; track booking.id) {
+                <div class="booking-card past-card">
+                  <div class="card-header">
+                    <span class="service-name">{{ booking.Service?.title || 'Unknown Service' }}</span>
+                    <span class="status-badge" [ngClass]="booking.booking_status">
+                      {{ booking.booking_status | uppercase }}
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <p><strong>Booking ID:</strong> {{ booking.booking_number }}</p>
+                    <p><strong>Date:</strong> {{ booking.scheduled_date | date:'longDate' }}</p>
+                    <p><strong>Provider:</strong> {{ booking.Provider?.User?.full_name || 'N/A' }}</p>
+                    <p><strong>Total:</strong> ₹{{ booking.final_amount }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+</div>

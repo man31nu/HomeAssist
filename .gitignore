@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build outputs
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/backend/dist/
+/frontend/dist/
+
+# Node
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Angular
+.angular/

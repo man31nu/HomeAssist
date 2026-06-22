@@ -1,0 +1,45 @@
+<!-- NAVBAR -->
+<nav class="hf-navbar">
+  <a routerLink="/" class="hf-logo" id="nav-logo">
+    <!-- House icon matching reference -->
+    <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 3L3 14H7V28H13V20H19V28H25V14H29L16 3Z" fill="#2E7D32"/>
+      <path d="M13 20H19V28H13V20Z" fill="#1b5e20"/>
+    </svg>
+    <span class="logo-text">HOME <strong>ASSIST</strong></span>
+  </a>
+
+  <ul class="hf-nav-links">
+    <li><a routerLink="/services" id="nav-services">SERVICES</a></li>
+    <li><a href="#about" id="nav-about">ABOUT</a></li>
+    <li><a href="#contact" id="nav-contact">CONTACT</a></li>
+  </ul>
+
+  <div class="hf-nav-actions">
+    @if (authService.currentUserValue) {
+      <a routerLink="/{{ authService.currentUserValue.role | lowercase }}" class="hf-btn-outline" id="nav-dashboard">Dashboard</a>
+      <button class="hf-btn-primary" (click)="logout()" id="nav-logout">Logout</button>
+    } @else {
+      <a routerLink="/login" class="hf-btn-outline" id="nav-login">LOGIN</a>
+      <a routerLink="/register" class="hf-btn-primary" id="nav-book-now">BOOK NOW</a>
+    }
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<main>
+  <router-outlet />
+</main>
+
+<!-- FOOTER -->
+<footer class="hf-footer">
+  <div class="hf-footer-inner">
+    <span>© 2026 <strong>HomeAssist</strong>. All rights reserved.</span>
+    <div class="hf-footer-links">
+      <a routerLink="/services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a routerLink="/login">Login</a>
+    </div>
+  </div>
+</footer>

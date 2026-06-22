@@ -1,0 +1,45 @@
+<div class="provider-portal">
+  <!-- Top Navbar -->
+  <header class="topbar">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z" fill="#1976D2" />
+      </svg>
+      <span>HOME <strong>ASSIST</strong> <small>PRO</small></span>
+    </div>
+
+    <div class="user-menu">
+      <span class="user-greeting">Hi, {{ currentUser?.name || 'Provider' }}</span>
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="portal-body">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <a routerLink="/provider" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/provider/jobs" routerLinkActive="active" class="nav-item">
+          <span class="icon">💼</span>
+          <span>My Jobs</span>
+        </a>
+        <a routerLink="/provider/earnings" routerLinkActive="active" class="nav-item">
+          <span class="icon">💰</span>
+          <span>Earnings</span>
+        </a>
+        <a routerLink="/provider/profile" routerLinkActive="active" class="nav-item">
+          <span class="icon">🛠️</span>
+          <span>Profile Setting</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

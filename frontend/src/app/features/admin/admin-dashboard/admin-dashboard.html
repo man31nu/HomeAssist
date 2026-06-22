@@ -1,0 +1,97 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Admin Dashboard</h2>
+  </div>
+
+  <div *ngIf="loading" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && stats" class="row g-4 mb-4">
+    
+    <!-- Total Users -->
+    <div class="col-md-3">
+      <mat-card class="h-100 border-0 shadow-sm border-start border-4 border-primary">
+        <mat-card-content class="d-flex align-items-center justify-content-between">
+          <div>
+            <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem;">Total Users</p>
+            <h3 class="fw-bold mb-0">{{ stats.totalUsers }}</h3>
+          </div>
+          <mat-icon class="text-primary fs-1 opacity-50" style="height: 48px; width: 48px;">people</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Total Providers -->
+    <div class="col-md-3">
+      <mat-card class="h-100 border-0 shadow-sm border-start border-4 border-info">
+        <mat-card-content class="d-flex align-items-center justify-content-between">
+          <div>
+            <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem;">Providers</p>
+            <h3 class="fw-bold mb-0">{{ stats.totalProviders }}</h3>
+          </div>
+          <mat-icon class="text-info fs-1 opacity-50" style="height: 48px; width: 48px;">handyman</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Total Bookings -->
+    <div class="col-md-3">
+      <mat-card class="h-100 border-0 shadow-sm border-start border-4 border-warning">
+        <mat-card-content class="d-flex align-items-center justify-content-between">
+          <div>
+            <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem;">Total Bookings</p>
+            <h3 class="fw-bold mb-0">{{ stats.totalBookings }}</h3>
+          </div>
+          <mat-icon class="text-warning fs-1 opacity-50" style="height: 48px; width: 48px;">calendar_month</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Total Revenue -->
+    <div class="col-md-3">
+      <mat-card class="h-100 border-0 shadow-sm border-start border-4 border-success">
+        <mat-card-content class="d-flex align-items-center justify-content-between">
+          <div>
+            <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem;">Total Revenue</p>
+            <h3 class="fw-bold mb-0 text-success">₹{{ stats.totalRevenue | number:'1.2-2' }}</h3>
+          </div>
+          <mat-icon class="text-success fs-1 opacity-50" style="height: 48px; width: 48px;">payments</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+
+  <div class="row" *ngIf="!loading && stats">
+    <!-- Placeholders for Charts as requested in prompt -->
+    <div class="col-md-8">
+      <mat-card class="shadow-sm">
+        <mat-card-header>
+          <mat-card-title>Revenue Overview</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="py-4 text-center text-muted">
+          <mat-icon class="fs-1 opacity-25">bar_chart</mat-icon>
+          <p class="mt-2">Revenue Chart Implementation Placeholder (Chart.js)</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-4">
+      <mat-card class="shadow-sm h-100">
+        <mat-card-header>
+          <mat-card-title>Recent Activity</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="py-4 text-center text-muted">
+          <mat-icon class="fs-1 opacity-25">list_alt</mat-icon>
+          <p class="mt-2">Activity Feed Placeholder</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Provider Dashboard</h1>
+    <p>Manage your incoming requests and ongoing jobs.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon new">🔔</div>
+      <div class="stat-info">
+        <h3>New Requests</h3>
+        <span class="stat-value">{{ pendingBookings.length }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon active">💼</div>
+      <div class="stat-info">
+        <h3>Active Jobs</h3>
+        <span class="stat-value">{{ activeBookings.length }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon completed">✅</div>
+      <div class="stat-info">
+        <h3>Completed</h3>
+        <span class="stat-value">{{ completedBookings.length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <mat-tab-group>
+      
+      <!-- NEW REQUESTS TAB -->
+      <mat-tab label="New Requests ({{ pendingBookings.length }})">
+        <div class="tab-body">
+          @if (pendingBookings.length === 0) {
+            <div class="empty-state">
+              <span class="icon">☕</span>
+              <p>No new requests at the moment. Take a break!</p>
+            </div>
+          } @else {
+            <div class="job-list">
+              @for (job of pendingBookings; track job.id) {
+                <div class="job-card new-request">
+                  <div class="job-header">
+                    <h4>{{ job.Service?.title }}</h4>
+                    <span class="job-price">₹{{ job.total_amount }}</span>
+                  </div>
+                  <div class="job-details">
+                    <p><strong>Customer:</strong> {{ job.Customer?.full_name }}</p>
+                    <p><strong>Date:</strong> {{ job.scheduled_date | date }}</p>
+                  </div>
+                  <div class="job-actions">
+                    <button class="btn-accept" (click)="updateStatus(job.id, 'confirmed')">Accept Job</button>
+                    <button class="btn-decline" (click)="updateStatus(job.id, 'cancelled')">Decline</button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+      <!-- ACTIVE JOBS TAB -->
+      <mat-tab label="Active Jobs ({{ activeBookings.length }})">
+        <div class="tab-body">
+          @if (activeBookings.length === 0) {
+            <div class="empty-state">
+              <p>You have no active jobs.</p>
+            </div>
+          } @else {
+            <div class="job-list">
+              @for (job of activeBookings; track job.id) {
+                <div class="job-card active-job">
+                  <div class="job-header">
+                    <h4>{{ job.Service?.title }} <span class="badge {{job.booking_status}}">{{ job.booking_status }}</span></h4>
+                    <span class="job-price">₹{{ job.total_amount }}</span>
+                  </div>
+                  <div class="job-details">
+                    <p><strong>Customer:</strong> {{ job.Customer?.full_name }}</p>
+                    <p><strong>Phone:</strong> {{ job.Customer?.phone || 'N/A' }}</p>
+                    <p><strong>Date:</strong> {{ job.scheduled_date | date }}</p>
+                  </div>
+                  <div class="job-actions">
+                    @if (job.booking_status === 'confirmed') {
+                      <button class="btn-primary" (click)="updateStatus(job.id, 'in_progress')">Mark In Progress</button>
+                    }
+                    @if (job.booking_status === 'in_progress') {
+                      <button class="btn-success" (click)="updateStatus(job.id, 'completed')">Mark Completed</button>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+      <!-- COMPLETED JOBS TAB -->
+      <mat-tab label="Completed ({{ completedBookings.length }})">
+        <div class="tab-body">
+          @if (completedBookings.length === 0) {
+            <div class="empty-state">
+              <span class="icon">📂</span>
+              <p>No completed jobs yet.</p>
+            </div>
+          } @else {
+            <div class="job-list">
+              @for (job of completedBookings; track job.id) {
+                <div class="job-card completed-job">
+                  <div class="job-header">
+                    <h4>{{ job.Service?.title }}</h4>
+                    <span class="job-price">₹{{ job.total_amount }}</span>
+                  </div>
+                  <div class="job-details">
+                    <p><strong>Customer:</strong> {{ job.Customer?.full_name }}</p>
+                    <p><strong>Date Completed:</strong> {{ job.updated_at | date }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+</div>
