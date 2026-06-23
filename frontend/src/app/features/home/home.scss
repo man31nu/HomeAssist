@@ -113,7 +113,7 @@
 }
 
 .hero-title {
-  font-size: 4rem;
+  font-size: 2.5rem;
   font-weight: 900;
   line-height: 1.1;
   color: #0f172a;
@@ -591,7 +591,7 @@
     align-items: center;
   }
   
-  .hero-title { font-size: 3rem; }
+  .hero-title { font-size: 2rem; }
   
   .glass-panel { width: 100%; }
   
@@ -611,7 +611,7 @@
 }
 
 @media (max-width: 480px) {
-  .hero-title { font-size: 2.5rem; }
+  .hero-title { font-size: 1.75rem; }
   .hero-subtitle { font-size: 1rem; }
   .stat-item { width: 100%; margin-bottom: 2rem; }
 }

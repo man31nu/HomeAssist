@@ -8,8 +8,7 @@
       <!-- Search -->
       <div class="search-bar">
         <span class="si">🔍</span>
-        <input type="text" [(ngModel)]="searchQuery" (input)="applyFilter()"
-               placeholder="Search services..." />
+        <input type="text" [(ngModel)]="searchQuery" (input)="applyFilter()" placeholder="Search services..." />
       </div>
     </div>
   </div>
@@ -18,56 +17,56 @@
     <!-- Category Tabs -->
     <div class="category-tabs">
       @for (cat of categories; track cat) {
-        <button class="cat-tab" [class.active]="activeCategory === cat" (click)="filterBy(cat)">
-          {{ cat }}
-        </button>
+      <button class="cat-tab" [class.active]="activeCategory === cat" (click)="filterBy(cat)">
+        {{ cat }}
+      </button>
       }
     </div>
 
     <!-- Loading -->
     @if (loading) {
-      <div class="loading-grid">
-        @for (i of [1,2,3,4,5,6]; track i) {
-          <div class="skeleton-card"></div>
-        }
-      </div>
+    <div class="loading-grid">
+      @for (i of [0,1,2,3,4,5,6]; track i) {
+      <div class="skeleton-card"></div>
+      }
+    </div>
     }
 
     <!-- Error -->
     @if (error) {
-      <div class="error-box">
-        <span>⚠️</span> {{ error }}
-      </div>
+    <div class="error-box">
+      <span>⚠️</span> {{ error }}
+    </div>
     }
 
     <!-- Services Grid -->
     @if (!loading && filteredServices.length > 0) {
-      <div class="services-grid">
-        @for (service of filteredServices; track service.id) {
-          <div class="service-card" [routerLink]="['/services', service.id]">
-            <div class="card-icon">{{ getIcon(service.category) }}</div>
-            <div class="card-category">{{ service.category }}</div>
-            <h3 class="card-name">{{ service.name }}</h3>
-            <p class="card-desc">{{ service.description }}</p>
-            <div class="card-footer">
-              <div class="card-price">
-                Starting at<br><strong>₹{{ service.basePrice }}</strong>
-              </div>
-              <button class="btn-book" [routerLink]="['/services', service.id]">Book Now</button>
-            </div>
+    <div class="services-grid">
+      @for (service of filteredServices; track service.id) {
+      <div class="service-card" [routerLink]="['/services', service.id]">
+        <div class="card-icon">{{ getIcon(service.category) }}</div>
+        <div class="card-category">{{ service.category }}</div>
+        <h3 class="card-name">{{ service.name }}</h3>
+        <p class="card-desc">{{ service.description }}</p>
+        <div class="card-footer">
+          <div class="card-price">
+            Starting at<br><strong>₹{{ service.basePrice }}</strong>
           </div>
-        }
+          <button class="btn-book" [routerLink]="['/services', service.id]">Book Now</button>
+        </div>
       </div>
+      }
+    </div>
     }
 
     <!-- Empty -->
     @if (!loading && filteredServices.length === 0 && !error) {
-      <div class="empty-state">
-        <span>🔍</span>
-        <h3>No services found</h3>
-        <p>Try searching for something else or browse all categories.</p>
-        <button class="btn-reset" (click)="filterBy('All'); searchQuery=''">Show All Services</button>
-      </div>
+    <div class="empty-state">
+      <span>🔍</span>
+      <h3>No services found</h3>
+      <p>Try searching for something else or browse all categories.</p>
+      <button class="btn-reset" (click)="searchQuery=''; filterBy('All')">Show All Services</button>
+    </div>
     }
   </div>
 </div>

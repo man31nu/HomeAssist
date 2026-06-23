@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -34,9 +34,29 @@ export class ServicesList implements OnInit {
     'Salon for Women': '💅'
   };
 
+  private cdr = inject(ChangeDetectorRef);
+
   ngOnInit(): void {
-    const cat = this.route.snapshot.queryParamMap.get('category');
-    if (cat) this.activeCategory = cat;
+    this.route.queryParams.subscribe(params => {
+      const cat = params['category'];
+      if (cat) {
+        this.activeCategory = cat;
+      } else {
+        this.activeCategory = 'All';
+      }
+
+      const q = params['q'];
+      if (q) {
+        this.searchQuery = q;
+      } else {
+        this.searchQuery = '';
+      }
+
+      if (this.services.length > 0) {
+        this.applyFilter();
+        this.cdr.detectChanges();
+      }
+    });
 
     this.serviceService.getServices().subscribe({
       next: (res) => {
@@ -51,10 +71,12 @@ export class ServicesList implements OnInit {
         }));
         this.applyFilter();
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.error = 'Failed to load services. Please ensure the backend is running.';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -65,7 +87,7 @@ export class ServicesList implements OnInit {
   }
 
   applyFilter() {
-    let result = this.services;
+    let result = [...this.services];
     if (this.activeCategory !== 'All') {
       result = result.filter(s => s.category === this.activeCategory);
     }
