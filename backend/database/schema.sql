@@ -1,7 +1,7 @@
 -- Database: homefix_db
 
-CREATE DATABASE IF NOT EXISTS homefix_db;
-USE homefix_db;
+CREATE DATABASE IF NOT EXISTS homeassist_db;
+USE homeassist_db;
 
 -- 1. Users Table
 CREATE TABLE IF NOT EXISTS Users (

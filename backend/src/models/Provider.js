@@ -16,7 +16,7 @@ const Provider = sequelize.define('Provider', {
     allowNull: true,
   },
   service_category: {
-    type: DataTypes.ENUM('Electrician', 'Carpenter', 'Plumber', 'Cleaning', 'AC Repair', 'Appliance Repair'),
+    type: DataTypes.ENUM('Electrician', 'Carpenter', 'Plumber', 'Cleaning', 'AC Repair', 'Appliance Repair', 'Salon for Women'),
     allowNull: false,
     defaultValue: 'Electrician',
   },
